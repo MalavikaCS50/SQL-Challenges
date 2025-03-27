@@ -1,6 +1,6 @@
 # SQL-Challenges
 
-**#Amazon Data Analyst Interview Question – SQL Challenge**
+**1 #Amazon Data Analyst Interview Question – SQL Challenge**
 
 In a recent Amazon data analyst interview, one of the candidates was given the following SQL challenge
 
@@ -42,7 +42,7 @@ ORDER BY month_num, product_id
 
 
 
-**#Amazon Data Analyst Interview Question – SQL Challenge 2**
+**2#Amazon Data Analyst Interview Question – SQL Challenge 2**
 
 In a recent Amazon data analyst interview, one of the candidates was given the following SQL challenge
 
@@ -98,6 +98,51 @@ ON c.customer_id=o.customer_id
 GROUP BY c.customer_id
 HAVING sum(o.order_amount)>100
 ORDER BY c.customer_id
+
+
+
+**3 Beauty of SQL RANK Function | SQL Interview Question and Answers | Covid Cases**
+
+Find the cities where the covid cases are increasing continuously
+
+create table covid(city varchar(50),days date,cases int);
+delete from covid;
+insert into covid values('DELHI','2022-01-01',100);
+insert into covid values('DELHI','2022-01-02',200);
+insert into covid values('DELHI','2022-01-03',300);
+
+insert into covid values('MUMBAI','2022-01-01',100);
+insert into covid values('MUMBAI','2022-01-02',100);
+insert into covid values('MUMBAI','2022-01-03',300);
+
+insert into covid values('CHENNAI','2022-01-01',100);
+insert into covid values('CHENNAI','2022-01-02',200);
+insert into covid values('CHENNAI','2022-01-03',150);
+
+insert into covid values('BANGALORE','2022-01-01',100);
+insert into covid values('BANGALORE','2022-01-02',300);
+insert into covid values('BANGALORE','2022-01-03',200);
+insert into covid values('BANGALORE','2022-01-04',400);
+
+
+--find the cities where the covid cases are increasing continuously
+
+
+**Code:**
+
+WITH cte as(SELECT
+*,
+RANK() OVER (PARTITION BY city ORDER BY days asc) as rn_days,
+RANK() OVER (PARTITION BY city ORDER BY cases asc) as rn_cases,
+RANK() OVER (PARTITION BY city ORDER BY days asc)-RANK() OVER (PARTITION BY city ORDER BY cases asc) as diff
+FROM covid)
+
+select
+city
+from cte
+group by city
+having count(distinct diff)=1 and max(diff)=0
+
 
 
 
