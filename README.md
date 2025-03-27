@@ -125,7 +125,7 @@ insert into covid values('BANGALORE','2022-01-03',200);
 insert into covid values('BANGALORE','2022-01-04',400);
 
 
---find the cities where the covid cases are increasing continuously
+**--Find the cities where the covid cases are increasing continuously**
 
 
 **Code:**
@@ -143,6 +143,81 @@ from cte
 group by city
 having count(distinct diff)=1 and max(diff)=0
 
+
+**4 Deadly Combination of Group By and Having Clause in SQL | SQL Interview Questions and Answers**
+
+
+**--Find students with same marks in physics and chemistry**
+
+CREATE TABLE exams(
+student_id INT,
+subject VARCHAR(20),
+marks INT);
+
+delete from exams;
+
+INSERT INTO exams(student_id,subject,marks)
+VALUES (1,'Chemistry',91),
+(1,'Physics',91),
+(2,'Chemistry',80),
+(2,'Physics',90),
+(3,'Chemistry',80),
+(4,'Chemistry',71),
+(4,'Physics',54);
+
+select
+student_id,
+round(avg(marks),0) as avg_marks
+from exams
+WHERE subject IN ('Physics','Chemistry')
+GROUP BY student_id
+HAVING COUNT(DISTINCT marks)=1 and COUNT(DISTINCT subject)=2
+ORDER BY student_id
+
+
+**5 Double Self Join in SQL | Amazon Interview Question**
+
+
+**--Find employee, manager, and senior manager from a single table**
+
+
+**Code:**
+
+
+create table emp(
+emp_id int,
+emp_name varchar(20),
+department_id int,
+salary int,
+manager_id int,
+emp_age int);
+
+insert into emp
+values
+(1, 'Ankit', 100,10000, 4, 39),
+(2, 'Mohit', 100, 15000, 5, 48),
+(3, 'Vikas', 100, 12000,4,37),
+(4, 'Rohit', 100, 14000, 2, 16),
+(5, 'Mudit', 200, 20000, 6,55),
+(6, 'Agam', 200, 12000,2, 14),
+(7, 'Sanjay', 200, 9000, 2,13),
+(8, 'Ashish', 200,5000,2,12),
+(9, 'Mukesh',300,6000,6,51),
+(10, 'Rakesh',500,7000,6,50)
+
+select * from emp
+
+select
+e.emp_id,
+e.emp_name,
+m.emp_name as manager_name,
+sm.emp_name as senior_manager
+from emp e
+LEFT JOIN emp m
+ON e.manager_id = m.emp_id
+LEFT JOIN emp sm
+ON m.manager_id = sm.emp_id
+ORDER BY e.emp_id
 
 
 
